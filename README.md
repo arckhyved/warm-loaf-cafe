@@ -42,6 +42,8 @@ Welcome to the frontend repository for **Warm Loaf Bakery & Cafe**! Inspired by 
 2. Navigate to the project directory: `cd warm-loaf-cafe-frntnd`
 3. Run the project: Simply double-click `index.html` to open it in your browser, or launch it using a local development tool (such as VS Code Live Server or Notepad++ HTML Preview).
 
+---
+
 ## 📂 Project Structure
 
 ```text
