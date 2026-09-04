@@ -1,3 +1,5 @@
+# mrow! ⋆.˚☕︎ ₍^˵- ⩊ -˵^₎⟆
+---
 # 🍞 Warm Loaf Bakery & Cafe — Frontend UI
 
 > *Where every loaf is a "purr-fect" slice of heaven.*
