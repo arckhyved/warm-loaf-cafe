@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bread & Pastry Shop</title>
+  <link rel="stylesheet" href="pan.css">
+</head>
+
+<div id="profileModal" class="modal-overlay">
+  <div class="form-container modal-content profile-modal-content-large">
+    <span class="close-btn" onclick="closeProfileModal()">&times;</span>
+    <h3 style="color: #4a2c1a; margin-bottom: 20px; text-align: center;">Your Profile</h3>
+
+    <div class="profile-layout">
+      <!-- Left side: Picture & Personal Details -->
+      <div class="profile-left">
+        <div class="profile-pic-container">
+          <img id="profilePicDisplay" src="https://via.placeholder.com/150" alt="Profile Picture">
+          <input type="file" id="profilePicInput" accept="image/*" onchange="uploadProfilePic(event)">
+        </div>
+
+        <label>Full Name:</label>
+        <input type="text" id="profileName" placeholder="Enter full name">
+
+        <label>Email:</label>
+        <input type="email" id="profileEmail" placeholder="Enter email address">
+
+        <label>Phone:</label>
+        <input type="text" id="profilePhone" placeholder="Enter phone number">
+
+        <label>Delivery Address:</label>
+        <input type="text" id="profileAddress" placeholder="Enter delivery address">
+
+        <label>Username:</label>
+        <input type="text" id="profileUser" disabled style="background-color: #eee; cursor: not-allowed;">
+
+        <label>Password:</label>
+        <input type="text" id="profilePass">
+
+        <button class="add-to-cart-btn" style="width: 100%; margin-top: 15px;" onclick="saveProfileChanges()">Save
+          Details</button>
+      </div>
+
+      <!-- Right side: Orders & Role Dashboards -->
+      <div class="profile-right">
+        <div id="dashboardButtons" style="display: none; margin-bottom: 20px;">
+          <h4 style="color: #4a2c1a; margin-top: 0; border-bottom: 1px solid #eee; padding-bottom: 10px;">Dashboards
+          </h4>
+          <button id="adminDashboardBtn" class="btn-primary" style="display: none; width: 100%; margin-bottom: 10px;"
+            onclick="openAdminDashboard()">Go
+            to Admin Dashboard</button>
+          <button id="sellerDashboardBtn" class="btn-primary" style="display: none; width: 100%; margin-bottom: 10px;"
+            onclick="openSellerDashboard()">Go to Seller Dashboard</button>
+        </div>
+
+        <h4 style="color: #4a2c1a; margin-top: 0; border-bottom: 1px solid #eee; padding-bottom: 10px;">Order History
+        </h4>
+        <div class="order-history-container">
+          <ul id="orderHistoryList" class="order-list">
+            <!-- Orders will be injected here -->
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<body>
+
+  <header>
+    <a href="#" class="header-logo-link">
+      <img src="taytol.png" alt="Sweet Crumbs Bakery Logo" class="header-logo">
+    </a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="#" id="navSignup" onclick="openRoleSelectionModal()">Sign Up</a>
+      <a href="#" id="navLogin" onclick="openLoginModal()">Login</a>
+      <a href="#" id="navProfile" style="display: none;" onclick="openProfileModal()">Profile</a>
+      <a href="#" id="navSettings" style="display: none;" onclick="openSettingsModal()">Settings</a>
+    </nav>
+  </header>
+
+  <div class="hero" id="home">
+    <img src="warm.png" alt="Warm Loaf Logo" class="hero-logo">
+    <h1 class="hero-text">Where every loaf is a "purr-fect" slice of heaven.</h1>
+  </div>
+
+  <section class="about-hero" id="about">
+    <div class="about-text">
+      <h2>About Us</h2>
+      <p>Founded in 2026, Warm Loaf was born out of a simple love for the comforting aroma of freshly baked bread and
+        the quiet moments of a lazy afternoon. Inspired by the gentle, resting "loaf" form of a sleepy cat, our goal was
+        to build a space that feels just as welcoming, familiar, and warm.</p>
+      <p>Every morning, our bakers craft a variety of golden-brown, artisanal breads and sweet pastries from scratch. To
+        complement our food, we serve a carefully curated menu of classic, straightforward coffees and teas—no gimmicks,
+        just perfectly pulled espresso shots and high-quality brews.</p>
+      <p>More than just a bakery, Warm Loaf is a community retreat. It’s a place to catch your breath, enjoy a rich
+        cappuccino, and savor the simple pleasure of a perfectly baked treat.</p>
+    </div>
+    <div class="about-slider" id="aboutSlider">
+      <img src="cat1.jpg" alt="About Us 1" class="slide active">
+      <img src="cat2.jpg" alt="About Us 2" class="slide">
+      <img src="cat3.jpg" alt="About Us 3" class="slide">
+      <img src="cat4.jpg" alt="About Us 4" class="slide">
+      <img src="cat5.jpg" alt="About Us 5" class="slide">
+      <img src="cat6.jpg" alt="About Us 6" class="slide">
+    </div>
+  </section>
+
+  <div id="roleSelectionModal" class="modal-overlay">
+    <div class="form-container modal-content" style="max-width: 400px; text-align: center;">
+      <span class="close-btn" onclick="closeRoleSelectionModal()">&times;</span>
+      <h3 style="color: #4a2c1a; margin-bottom: 20px;">Choose Account Type</h3>
+
+      <div class="role-btn-container">
+        <button class="role-btn" onclick="selectRoleForSignup('Customer')">🍞 Customer</button>
+        <button class="role-btn" onclick="selectRoleForSignup('Seller')">🏪 Seller</button>
+        <button class="role-btn" onclick="selectRoleForSignup('Admin')">⚙️ Admin</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="signupModal" class="modal-overlay">
+    <div class="form-container modal-content">
+      <span class="close-btn" onclick="closeSignupModal()">&times;</span>
+      <h3 id="signupTitle">Sign Up</h3>
+
+      <input type="text" id="signupUser" placeholder="Username">
+      <input type="password" id="signupPass" placeholder="Password">
+
+      <button onclick="signup()">Register</button>
+    </div>
+  </div>
+
+  <div id="loginModal" class="modal-overlay">
+    <div class="form-container modal-content">
+      <span class="close-btn" onclick="closeLoginModal()">&times;</span>
+      <h3 style="text-align: center; color: #4a2c1a; margin-bottom: 20px;">Log In</h3>
+
+      <input type="text" id="loginUser" placeholder="Username">
+      <input type="password" id="loginPass" placeholder="Password">
+
+      <button
+        style="width: 100%; padding: 10px; background: #6b3e26; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px;"
+        onclick="login()">Sign In</button>
+    </div>
+  </div>
+
+  <div id="settingsModal" class="modal-overlay">
+    <div class="form-container modal-content">
+      <span class="close-btn" onclick="closeSettingsModal()">&times;</span>
+      <h3 style="color: #4a2c1a; margin-bottom: 20px;">Settings</h3>
+
+      <div style="display: flex; align-items: center; gap: 10px; margin: 15px 0;">
+        <input type="checkbox" id="settingsNewsletter" style="width: auto; margin: 0;">
+        <label style="margin: 0;">Subscribe to Newsletter</label>
+      </div>
+
+      <button class="add-to-cart-btn" style="width: 100%; margin-top: 15px;" onclick="saveSettings()">Save
+        Settings</button>
+      <hr style="margin: 20px 0; border: 0; border-top: 1px solid #ccc;">
+
+      <button
+        style="width: 100%; margin-top: 10px; background: #6b3e26; color: white; border: none; padding: 12px; border-radius: 5px; cursor: pointer; font-weight: bold;"
+        onclick="logout()">Logout</button>
+      <button
+        style="width: 100%; margin-top: 10px; background: #d9534f; color: white; border: none; padding: 12px; border-radius: 5px; cursor: pointer; font-weight: bold;"
+        onclick="deleteAccount()">Delete Account</button>
+    </div>
+  </div>
+
+  <div id="adminDashboardModal" class="modal-overlay">
+    <div class="form-container modal-content profile-modal-content-large" style="max-width: 900px;">
+      <span class="close-btn" onclick="closeAdminDashboard()">&times;</span>
+      <h3 style="color: #4a2c1a; margin-bottom: 20px; text-align: center;">Admin Dashboard</h3>
+
+      <div class="admin-dashboard-layout">
+        <div class="admin-stats-row">
+          <div class="stat-widget">
+            <h4>Total Users</h4>
+            <p id="statTotalUsers">0</p>
+          </div>
+          <div class="stat-widget">
+            <h4>Total Orders</h4>
+            <p id="statTotalOrders">0</p>
+          </div>
+          <div class="stat-widget">
+            <h4>Total Revenue</h4>
+            <p id="statTotalRevenue">P0.00</p>
+          </div>
+        </div>
+
+        <h4 style="color: #4a2c1a; margin-top: 20px;">User Management</h4>
+        <div class="admin-table-container" style="max-height: 250px;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Role</th>
+                <th>Orders</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="adminUserTableBody">
+              <!-- Users will be injected here -->
+            </tbody>
+          </table>
+        </div>
+
+        <h4 style="color: #4a2c1a; margin-top: 30px;">Analytics Overview</h4>
+        <div class="admin-table-container" style="max-height: 250px;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Time Spent (s)</th>
+                <th>Mouse Dist (px)</th>
+                <th>Media Clicks</th>
+              </tr>
+            </thead>
+            <tbody id="adminAnalyticsTableBody">
+            </tbody>
+          </table>
+        </div>
+
+        <h4 style="color: #4a2c1a; margin-top: 30px;">Technical Logs</h4>
+        <div class="admin-table-container" style="max-height: 250px;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>IP Address</th>
+                <th>Location</th>
+                <th>Resolution</th>
+                <th>Browser/OS Info</th>
+              </tr>
+            </thead>
+            <tbody id="adminTechTableBody">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="sellerDashboardModal" class="modal-overlay">
+    <div class="form-container modal-content profile-modal-content-large" style="max-width: 900px;">
+      <span class="close-btn" onclick="closeSellerDashboard()">&times;</span>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h3 style="color: #4a2c1a; margin: 0;">Seller Dashboard</h3>
+        <button class="btn-primary" onclick="openAddProductModal()" style="width: auto; padding: 10px 15px;">+ Add New
+          Product</button>
+      </div>
+
+      <div class="admin-dashboard-layout">
+        <div class="admin-stats-row">
+          <div class="stat-widget">
+            <h4>Total Items Sold</h4>
+            <p id="sellerTotalItems">0</p>
+          </div>
+          <div class="stat-widget">
+            <h4>Total Revenue</h4>
+            <p id="sellerTotalRevenue">$0.00</p>
+          </div>
+          <div class="stat-widget">
+            <h4>Avg. Conversion</h4>
+            <p id="sellerConversion">0%</p>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 20px; margin-top: 30px; flex-wrap: wrap;">
+          <div style="flex: 1; min-width: 250px;">
+            <h4 style="color: #4a2c1a; margin-top: 0;">Traffic Sources</h4>
+            <div class="admin-table-container">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Source</th>
+                    <th>Percentage</th>
+                  </tr>
+                </thead>
+                <tbody id="sellerTrafficTableBody">
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div style="flex: 1; min-width: 250px;">
+            <h4 style="color: #4a2c1a; margin-top: 0;">Visitor Behavior</h4>
+            <div class="admin-table-container">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>User</th>
+                    <th>Time (s)</th>
+                    <th>Interactions</th>
+                  </tr>
+                </thead>
+                <tbody id="sellerBehaviorTableBody">
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <h4 style="color: #4a2c1a; margin-top: 30px;">E-commerce Activity</h4>
+        <div class="admin-table-container" style="max-height: 250px;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Orders</th>
+                <th>Items Viewed (Mock)</th>
+                <th>Revenue</th>
+              </tr>
+            </thead>
+            <tbody id="sellerEcommerceTableBody">
+            </tbody>
+          </table>
+        </div>
+
+        <h4 style="color: #4a2c1a; margin-top: 30px;">Visitor Locations & IP</h4>
+        <div class="admin-table-container" style="max-height: 250px;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>IP Address</th>
+                <th>Location</th>
+              </tr>
+            </thead>
+            <tbody id="sellerLocationTableBody">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="menu-categories-container" id="products">
+    <div class="category-dropdown">
+      <button class="category-btn" onclick="filterProducts('All')">All</button>
+    </div>
+    <div class="category-dropdown">
+      <button class="category-btn" onclick="filterProducts('Breads and Pastries')">Breads and Pastries</button>
+      <div class="dropdown-content">
+        <a href="#" onclick="filterSubcategory('Breads and Pastries', 'Classic Loaves'); return false;">Classic
+          Loaves</a>
+        <a href="#" onclick="filterSubcategory('Breads and Pastries', 'Sweet Breads & Rolls'); return false;">Sweet
+          Breads & Rolls</a>
+        <a href="#" onclick="filterSubcategory('Breads and Pastries', 'Savory Bites & Pastries'); return false;">Savory
+          Bites & Pastries</a>
+        <a href="#" onclick="filterSubcategory('Breads and Pastries', 'Cakes, Tarts & Treats'); return false;">Cakes,
+          Tarts & Treats</a>
+      </div>
+    </div>
+    <div class="category-dropdown">
+      <button class="category-btn" onclick="filterProducts('Beverages')">Beverages</button>
+      <div class="dropdown-content">
+        <a href="#" onclick="filterSubcategory('Beverages', 'Espresso & Hot Coffee'); return false;">Espresso & Hot
+          Coffee</a>
+        <a href="#" onclick="filterSubcategory('Beverages', 'Cold Brew & Iced Coffee'); return false;">Cold Brew & Iced
+          Coffee</a>
+        <a href="#" onclick="filterSubcategory('Beverages', 'Teas & Tea Lattes'); return false;">Teas & Tea Lattes</a>
+        <a href="#" onclick="filterSubcategory('Beverages', 'Non-Coffee & Refreshers'); return false;">Non-Coffee &
+          Refreshers</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="products" id="productList"></div>
+
+  <div class="cart-floating-btn" onclick="openCart()">
+    <img src="pancart.png" alt="Cart" style="width: 60px;">
+    <span id="cartCount">0</span>
+  </div>
+
+  <div id="cartOverlay" class="modal-overlay" onclick="closeCart()"></div>
+
+  <div id="cartSidebar" class="cart-sidebar">
+    <div class="cart-header">
+      <h2>Your Cart</h2>
+      <span class="close-btn" onclick="closeCart()">&times;</span>
+    </div>
+
+    <ul id="cartItems" class="cart-items-list"></ul>
+
+    <div class="cart-footer">
+      <h3>Total: $<span id="cartTotal">0.00</span></h3>
+      <button class="btn-primary" style="width: 100%; margin-top: 10px;" onclick="checkout()">Checkout</button>
+    </div>
+  </div>
+
+  <div id="checkoutModal" class="modal-overlay">
+    <div class="form-container modal-content" style="max-width: 500px; text-align: left;">
+      <span class="close-btn" onclick="closeCheckoutModal()">&times;</span>
+      <h3 style="color: #4a2c1a; margin-bottom: 20px; text-align: center;">Checkout</h3>
+
+      <div
+        style="background: #f9f6f0; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #e0c3a3;">
+        <h4 style="margin-top: 0; color: #6b3e26;">Order Summary</h4>
+        <p style="margin: 5px 0; display: flex; justify-content: space-between;"><span>Subtotal:</span> $<span
+            id="checkoutSubtotal">0.00</span></p>
+        <p style="margin: 5px 0; display: flex; justify-content: space-between;"><span>Delivery Fee:</span> $2.00</p>
+        <hr style="border: 0; border-top: 1px solid #ccc; margin: 10px 0;">
+        <h4 style="margin: 0; color: #4a2c1a; display: flex; justify-content: space-between;"><span>Total:</span> $<span
+            id="checkoutTotal">0.00</span></h4>
+      </div>
+
+      <label>Delivery Address:</label>
+      <input type="text" id="checkoutAddress" placeholder="Enter delivery address">
+
+      <label>Payment Method:</label>
+      <select id="checkoutPayment">
+        <option value="cash">Cash on Delivery</option>
+        <option value="card">Credit / Debit Card</option>
+        <option value="gcash">GCash / E-Wallet</option>
+      </select>
+
+      <button
+        style="width: 100%; margin-top: 20px; background: #6b3e26; color: white; border: none; padding: 12px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 16px;"
+        onclick="placeOrder()">Place Order</button>
+    </div>
+  </div>
+
+  <div id="productModal" class="modal-overlay">
+    <div class="product-modal-content">
+      <span class="close-btn" onclick="closeProductModal()">&times;</span>
+
+      <div class="product-details-layout">
+        <img id="modalProductImage" src="" alt="Product Image">
+
+        <div class="product-info">
+          <h2 id="modalProductName">Product Name</h2>
+          <p class="price" id="modalProductPrice">$0.00</p>
+          <p id="modalProductDesc" class="description"></p>
+
+          <button id="modalAddToCartBtn" class="btn-primary">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bakery-footer">
+    <div class="footer-container">
+      <div class="footer-section">
+        <h3>With Warm Loaf</h3>
+        <p>Baked with love and a dash of whiskers. We serve the fluffiest cat-themed treats in town.</p>
+      </div>
+
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#products">Our Breads</a></li>
+          <li><a href="#about">About Us</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h3>Contact Us</h3>
+        <p>📍 Hinulawan St., Poblacion, Toledo City, Cebu</p>
+        <p>📞 (555) CORNED-TUNA</p>
+        <p>📧 hello@warmloaf.com</p>
+
+        <div class="social-links" style="margin-top: 20px; display: flex; gap: 15px;">
+          <a href="https://facebook.com" target="_blank" title="Facebook"
+            style="display: inline-block; transition: transform 0.2s;">
+            <img src="facebook.png" alt="Facebook" style="width: 30px; height: 30px;">
+          </a>
+          <a href="https://tiktok.com" target="_blank" title="TikTok"
+            style="display: inline-block; transition: transform 0.2s;">
+            <img src="tik-tok.png" alt="TikTok" style="width: 30px; height: 30px;">
+          </a>
+          <a href="https://instagram.com" target="_blank" title="Instagram"
+            style="display: inline-block; transition: transform 0.2s;">
+            <img src="instagram.png" alt="Instagram" style="width: 30px; height: 30px;">
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Warm Loaf Bakery. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <div id="addProductModal" class="modal-overlay">
+    <div class="form-container modal-content" style="max-width: 500px; text-align: left;">
+      <span class="close-btn" onclick="closeAddProductModal()">&times;</span>
+      <h3 style="color: #4a2c1a; margin-bottom: 20px; text-align: center;">Add New Product</h3>
+
+      <label>Product Name:</label>
+      <input type="text" id="addProductName" placeholder="Enter product name">
+
+      <label>Price ($):</label>
+      <input type="number" id="addProductPrice" step="0.01" placeholder="0.00">
+
+      <label>Product Image:</label>
+      <input type="file" id="addProductImageInput" accept="image/*" onchange="handleAddProductImage(event)"
+        style="margin-bottom: 10px;">
+      <img id="addProductImagePreview" src="https://via.placeholder.com/300x200?text=New+Product" alt="Preview"
+        style="width: 100%; max-height: 200px; object-fit: cover; margin-bottom: 10px; border-radius: 5px; display: none;">
+      <input type="hidden" id="addProductImageBase64" value="">
+
+      <label>Category:</label>
+      <select id="addProductCategory">
+        <optgroup label="Breads and Pastries">
+          <option value="Classic Loaves">Classic Loaves</option>
+          <option value="Sweet Breads & Rolls">Sweet Breads & Rolls</option>
+          <option value="Savory Bites & Pastries">Savory Bites & Pastries</option>
+          <option value="Cakes, Tarts & Treats">Cakes, Tarts & Treats</option>
+        </optgroup>
+        <optgroup label="Beverages">
+          <option value="Espresso & Hot Coffee">Espresso & Hot Coffee</option>
+          <option value="Cold Brew & Iced Coffee">Cold Brew & Iced Coffee</option>
+          <option value="Teas & Tea Lattes">Teas & Tea Lattes</option>
+          <option value="Non-Coffee & Refreshers">Non-Coffee & Refreshers</option>
+        </optgroup>
+      </select>
+
+      <label>Description:</label>
+      <textarea id="addProductDesc" rows="3" placeholder="Brief description..."
+        style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 10px; font-family: inherit; resize: vertical; box-sizing: border-box;"></textarea>
+
+      <button
+        style="width: 100%; margin-top: 10px; background: #6b3e26; color: white; border: none; padding: 12px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 16px;"
+        onclick="submitNewProduct()">Save Product</button>
+    </div>
+  </div>
+
+  <script src="pao.js"></script>
+</body>
+
+</html>
