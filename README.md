@@ -4,6 +4,7 @@ Where every loaf is a "purr-fect" slice of heaven.
 Welcome to the frontend repository for Warm Loaf Bakery & Cafe! Inspired by the comforting aroma of freshly baked artisanal bread and the cozy posture of a sleeping cat, this project provides a warm, inviting, and seamless digital experience for web visitors.
 
 **🌟 Key Features**
+
 • **Warm & Cozy Aesthetic**: Custom brown and cream earth-tone design system, tailored typography, and playful cat-themed branding details.
 • **Hero Landing Header**: Features an interactive navigation bar, brand logo, tagline, and an active shopping cart counter badge.
 • **Storytelling "About Us" Section**: A visually balanced split layout showcasing the bakery's origins, artisanal philosophy, and cozy interior atmosphere.
